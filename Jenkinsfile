@@ -14,9 +14,6 @@ pipeline {
     }
     stages {
         stage('Prepare') {
-            agent {
-                docker { image 'docker' }
-            }
             steps {
                 echo 'Building..'
                 sh 'printenv'
