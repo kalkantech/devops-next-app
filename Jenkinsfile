@@ -17,6 +17,9 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'printenv'
+                sh 'ls -l ${WORKSPACE_TMP}'
+                sh 'ls -l ${PWD}'
+                sh 'docker --help'
             }
             post {
                 success {
