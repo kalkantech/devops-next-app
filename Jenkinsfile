@@ -16,6 +16,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 echo 'Building..'
+                sh 'printenv'
             }
             post {
                 success {
