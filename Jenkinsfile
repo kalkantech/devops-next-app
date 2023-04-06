@@ -14,10 +14,13 @@ pipeline {
     }
     stages {
         stage('Prepare') {
+            agent {
+                docker { image 'docker' }
+            }
             steps {
                 echo 'Building..'
                 sh 'printenv'
-                sh 'pwd'
+                sh 'docker --version'
                 sh 'whoami'
             }
             post {
