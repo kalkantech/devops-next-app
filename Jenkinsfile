@@ -18,7 +18,7 @@ pipeline {
                 echo 'Building..'
                 sh 'printenv'
                 sh 'pwd'
-                sh 'docker --help'
+                sh 'whoami'
             }
             post {
                 success {
