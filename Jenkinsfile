@@ -2,10 +2,10 @@ pipeline {
     // agent {
     //     docker { image 'docker' }
     // }
-    // agent any
-    agent {
-        docker { image 'node:16.13.1-alpine' }
-    }
+    agent any
+    // agent {
+    //     docker { image 'node:16.13.1-alpine' }
+    // }
     environment { 
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'printenv'
-                sh 'node --version'
+                sh 'docker --version'
             }
             post {
                 success {
