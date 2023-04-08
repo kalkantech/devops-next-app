@@ -3,9 +3,6 @@ pipeline {
     //     docker { image 'docker' }
     // }
     agent any
-    // agent {
-    //     docker { image 'node:16.13.1-alpine' }
-    // }
     environment { 
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
@@ -13,7 +10,7 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '50', artifactNumToKeepStr: '1'))
 		timeout(time: 15, unit: 'MINUTES')
-		ansiColor('xterm')
+		// ansiColor('xterm')
     }
     stages {
         stage('Prepare') {
