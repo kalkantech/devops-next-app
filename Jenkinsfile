@@ -1,8 +1,8 @@
 pipeline {
-    // agent {
-    //     docker { image 'node:16.13.1-alpine' }
-    // }
-    agent any
+    agent {
+        docker { image 'docker' }
+    }
+    // agent any
     environment { 
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
