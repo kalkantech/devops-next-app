@@ -4,31 +4,7 @@ pipeline {
     // }
     // agent any
     agent {
-       kubernetes {
-           defaultContainer 'docker'
-           yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    app: myapp
-spec:
-  containers:
-  - name: docker
-    image: docker:latest
-    command:
-    - sleep
-    args:
-    - infinity
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
-  volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
-"""
-       }
+        docker { image 'node:16.13.1-alpine' }
     }
     environment { 
         CC = 'clang'
@@ -44,10 +20,7 @@ spec:
             steps {
                 echo 'Building..'
                 sh 'printenv'
-                container('docker') {
-                   sh 'docker build -t my-image .'
-                }
-                sh 'whoami'
+                sh 'node --version'
             }
             post {
                 success {
