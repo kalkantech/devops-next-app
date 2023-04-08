@@ -4,18 +4,31 @@ pipeline {
     // }
     // agent any
     agent {
-        kubernetes {
-            containerTemplate {
-                name 'docker'
-                image 'docker:latest'
-                ttyEnabled true
-                command 'cat'
-                volumeMounts {
-                    name 'docker-sock'
-                    mountPath '/var/run/docker.sock'
-                }
-            }
-        }
+       kubernetes {
+           defaultContainer 'docker'
+           yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: docker
+    image: docker:latest
+    command:
+    - sleep
+    args:
+    - infinity
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+"""
+       }
     }
     environment { 
         CC = 'clang'
@@ -64,10 +77,5 @@ pipeline {
                 echo 'Deploying....'
             }
         }
-    }
-    volumes {
-       hostPath {
-           path '/var/run/docker.sock'
-       }
     }
 }
