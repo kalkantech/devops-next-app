@@ -1,8 +1,22 @@
 pipeline {
-    agent {
-        docker { image 'docker' }
-    }
+    // agent {
+    //     docker { image 'docker' }
+    // }
     // agent any
+    agent {
+        kubernetes {
+            containerTemplate {
+                name 'docker'
+                image 'docker:latest'
+                ttyEnabled true
+                command 'cat'
+                volumeMounts {
+                    name 'docker-sock'
+                    mountPath '/var/run/docker.sock'
+                }
+            }
+        }
+    }
     environment { 
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
@@ -17,7 +31,9 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'printenv'
-                sh 'docker --version'
+                container('docker') {
+                   sh 'docker build -t my-image .'
+                }
                 sh 'whoami'
             }
             post {
@@ -48,5 +64,10 @@ pipeline {
                 echo 'Deploying....'
             }
         }
+    }
+    volumes {
+       hostPath {
+           path '/var/run/docker.sock'
+       }
     }
 }
