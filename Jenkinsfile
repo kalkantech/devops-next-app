@@ -17,7 +17,6 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'printenv'
-                sh 'docker --version'
             }
             post {
                 success {
@@ -35,6 +34,10 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                sh '''
+                    docker build -t shield07/devops-next-app .
+
+                '''
             }
         }
         stage('Test') {
