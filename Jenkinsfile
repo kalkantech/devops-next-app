@@ -17,6 +17,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'printenv'
+                sh 'whoami'
             }
             post {
                 success {
