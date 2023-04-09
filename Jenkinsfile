@@ -7,6 +7,7 @@ pipeline {
         ARGOCD_CONFIG_REPO = "github.com/kalkantech/devops-app-config.git"
         ARGOCD_CONFIG_REPO_PATH = "/tmp/devops-app-config"
         ARGOCD_CONFIG_REPO_BRANCH = "main"
+        ARGOCD_APP_CONFIG_PATH = "argo-apps/values.yaml"
         DOCKER_APP_REPO = "shield07"
         // Credentials
         DOCKER_CREDS = credentials("docker")
@@ -68,7 +69,12 @@ pipeline {
                 echo 'Deploying Helm....'
                 sh '''
                     cd $ARGOCD_CONFIG_REPO_PATH
-                    ls
+                    yq eval .applications.${APP_NAME}.values.image.tag='${APP_VERSION}' ${ARGOCD_APP_CONFIG_PATH}
+                    git config --global user.email "kalkanabdulmelik@gmail.com"
+                    git config --global user.name "AbdulmelikKalkan"
+                    git add ${ARGOCD_APP_CONFIG_PATH}
+                    git commit -m "🚀 AUTOMATED COMMIT - Deployment of ${APP_NAME} at version ${APP_VERSION} 🚀" || rc=$?
+                    git push -u origin ${ARGOCD_CONFIG_REPO_BRANCH}
                 '''
             }
         }
