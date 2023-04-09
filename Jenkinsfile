@@ -6,6 +6,8 @@ pipeline {
     environment { 
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
+        // Credentials bound in OpenShift
+		GIT_CREDS = credentials("${OPENSHIFT_BUILD_NAMESPACE}-git-auth")
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '50', artifactNumToKeepStr: '1'))
@@ -15,9 +17,10 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                echo 'Building..'
-                sh 'printenv'
-                sh 'whoami'
+                echo 'Preparing..'
+                script {
+                    env.APP_VERSION = sh(returnStdout: true, script: "npm run version --silent").trim()
+                }
             }
             post {
                 success {
@@ -32,12 +35,18 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Build App') {
             steps {
-                echo 'Building..'
+                echo 'Building App..'
+            }
+        }
+        stage('Build Image') {
+            steps {
+                echo 'Building Image..'
                 sh '''
-                    docker build -t shield07/devops-next-app .
-
+                    docker build -t shield07/devops-next-app:${APP_VERSION} .
+                    docker push shield07/devops-next-app:${APP_VERSION}
+                    #docker rmi -f shield07/devops-next-app:${APP_VERSION}
                 '''
             }
         }
