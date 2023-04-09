@@ -8,6 +8,9 @@ pipeline {
         ARGOCD_CONFIG_REPO_PATH = "/tmp/devops-app-config"
         ARGOCD_CONFIG_REPO_BRANCH = "main"
         ARGOCD_APP_CONFIG_PATH = "argo-apps/values.yaml"
+        ARGOCD_CONTEXT = "kubernetes.quasys.local:32544"
+        ARGOCD_USERNAME = "admin"
+        ARGOCD_PASSWORD = "M648EbHtbaPMiNOs"
         DOCKER_APP_REPO = "shield07"
         // Credentials
         DOCKER_CREDS = credentials("docker")
@@ -27,7 +30,10 @@ pipeline {
                     env.APP_VERSION = sh(returnStdout: true, script: "npm run version --silent").trim()
                     env.APP_NAME = sh(returnStdout: true, script: "npm run name --silent").trim()
                 }
-                sh 'docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
+                sh '''
+                    docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW
+                    argocd login $ARGOCD_CONTEXT --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD --insecure
+                '''
                 sh 'git clone https://$GIT_CREDS@$ARGOCD_CONFIG_REPO $ARGOCD_CONFIG_REPO_PATH'
             }
             post {
@@ -88,6 +94,14 @@ pipeline {
         stage('Sync ArgoCD') {
             steps {
                 echo 'Syncying ArgoCD....'
+                sh 'argocd app sync ${APP_NAME}'
+            }
+            post {
+                always {
+                    script {
+                        sh 'argocd logout $ARGOCD_CONTEXT'
+                    }
+                }
             }
         }
     }
