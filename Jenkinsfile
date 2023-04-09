@@ -25,7 +25,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 echo 'Preparing..'
-                sh 'printenv'
+                // sh 'printenv'
                 script {
                     env.APP_VERSION = sh(returnStdout: true, script: "npm run version --silent").trim()
                     env.APP_NAME = sh(returnStdout: true, script: "npm run name --silent").trim()
@@ -94,8 +94,8 @@ pipeline {
         stage('Sync ArgoCD') {
             steps {
                 echo 'Syncying ArgoCD....'
-                sh 'argocd app list'
-                sh 'argocd app sync $(argocd app list -o name | grep ${APP_NAME})'
+                // sh 'argocd app list'
+                sh 'argocd app sync $(argocd app list -o name | grep ${APP_NAME}) --prune --force --replace'
             }
             post {
                 always {
