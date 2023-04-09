@@ -7,7 +7,7 @@ pipeline {
         CC = 'clang'
         GIT_SSL_NO_VERIFY = true
         // Credentials bound in OpenShift
-		GIT_CREDS = credentials("${OPENSHIFT_BUILD_NAMESPACE}-git-auth")
+		// GIT_CREDS = credentials("${OPENSHIFT_BUILD_NAMESPACE}-git-auth")
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '50', artifactNumToKeepStr: '1'))
