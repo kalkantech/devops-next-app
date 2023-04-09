@@ -95,7 +95,7 @@ pipeline {
             steps {
                 echo 'Syncying ArgoCD....'
                 sh 'argocd app list'
-                sh 'argocd app sync ${APP_NAME}'
+                sh 'argocd app sync $(argocd app list -o name | grep ${APP_NAME})'
             }
             post {
                 always {
