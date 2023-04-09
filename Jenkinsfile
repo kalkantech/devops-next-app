@@ -47,6 +47,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo 'Building Image..'
+                echo "$DOCKER_CREDS"
                 sh '''
                     #docker build -t $APP_REPO/$APP_NAME:${APP_VERSION} .
                     #docker push $APP_REPO/$APP_NAME:${APP_VERSION}
