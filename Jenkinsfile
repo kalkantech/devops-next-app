@@ -48,10 +48,7 @@ pipeline {
             steps {
                 echo 'Building Image..'
                 
-                withCredentials([string(credentialsId: 'docker', variable: 'mydocker')]) {
-                    sh 'echo $mydocker'
-                    sh 'echo $mydocker | base64 -d'
-                }
+                sh 'echo $DOCKER_CREDS'
 
                 sh '''
                     #docker build -t $APP_REPO/$APP_NAME:${APP_VERSION} .
