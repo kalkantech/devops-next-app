@@ -69,7 +69,7 @@ pipeline {
                 echo 'Deploying Helm....'
                 sh '''
                     cd $ARGOCD_CONFIG_REPO_PATH
-                    yq eval -i .applications.\\"${APP_NAME}\\".values.image.tag='\\"${APP_VERSION}\\"' ${ARGOCD_APP_CONFIG_PATH}
+                    yq eval -i .applications.\\${APP_NAME}\\.values.image.tag='\\"${APP_VERSION}"\\' ${ARGOCD_APP_CONFIG_PATH}
                     git config --global user.email "kalkanabdulmelik@gmail.com"
                     git config --global user.name "AbdulmelikKalkan"
                     git add ${ARGOCD_APP_CONFIG_PATH}
