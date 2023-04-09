@@ -47,7 +47,12 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo 'Building Image..'
-                echo "$DOCKER_CREDS"
+                
+                withCredentials([string(credentialsId: 'docker', variable: 'mydocker')]) {
+                    sh 'echo $mydocker'
+                    sh 'echo $mydocker | base64 -d'
+                }
+
                 sh '''
                     #docker build -t $APP_REPO/$APP_NAME:${APP_VERSION} .
                     #docker push $APP_REPO/$APP_NAME:${APP_VERSION}
