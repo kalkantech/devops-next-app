@@ -94,6 +94,7 @@ pipeline {
         stage('Sync ArgoCD') {
             steps {
                 echo 'Syncying ArgoCD....'
+                sh 'argocd app list'
                 sh 'argocd app sync ${APP_NAME}'
             }
             post {
