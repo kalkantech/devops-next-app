@@ -25,6 +25,7 @@ pipeline {
                     env.APP_VERSION = sh(returnStdout: true, script: "npm run version --silent").trim()
                     env.APP_NAME = sh(returnStdout: true, script: "npm run name --silent").trim()
                 }
+                sh 'docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
             }
             post {
                 success {
@@ -47,12 +48,10 @@ pipeline {
         stage('Build Image') {
             steps {
                 echo 'Building Image..'
-                
-                sh 'echo $DOCKER_CREDS'
 
                 sh '''
-                    #docker build -t $APP_REPO/$APP_NAME:${APP_VERSION} .
-                    #docker push $APP_REPO/$APP_NAME:${APP_VERSION}
+                    docker build -t $APP_REPO/$APP_NAME:${APP_VERSION} .
+                    docker push $APP_REPO/$APP_NAME:${APP_VERSION}
                     #docker rmi -f $APP_REPO/$APP_NAME:${APP_VERSION}
                 '''
             }
