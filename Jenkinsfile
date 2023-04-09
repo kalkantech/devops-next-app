@@ -69,13 +69,20 @@ pipeline {
                 echo 'Deploying Helm....'
                 sh '''
                     cd $ARGOCD_CONFIG_REPO_PATH
-                    yq eval .applications.\\"${APP_NAME}\\".values.image.tag='\\"${APP_VERSION}\\"' ${ARGOCD_APP_CONFIG_PATH}
+                    yq eval -i .applications.\\"${APP_NAME}\\".values.image.tag='\\"${APP_VERSION}\\"' ${ARGOCD_APP_CONFIG_PATH}
                     git config --global user.email "kalkanabdulmelik@gmail.com"
                     git config --global user.name "AbdulmelikKalkan"
                     git add ${ARGOCD_APP_CONFIG_PATH}
                     git commit -m "🚀 AUTOMATED COMMIT - Deployment of ${APP_NAME} at version ${APP_VERSION} 🚀" || rc=$?
                     git push -u origin ${ARGOCD_CONFIG_REPO_BRANCH}
                 '''
+            }
+            post{
+                always{
+                    script{
+                        sh 'rm -rf $ARGOCD_CONFIG_REPO_PATH'
+                    }
+                }
             }
         }
         stage('Sync ArgoCD') {
