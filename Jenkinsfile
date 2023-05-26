@@ -8,7 +8,7 @@ pipeline {
         ARGOCD_CONFIG_REPO_PATH = "/tmp/devops-app-config"
         ARGOCD_CONFIG_REPO_BRANCH = "main"
         ARGOCD_APP_CONFIG_PATH = "argo-apps/values.yaml"
-        ARGOCD_CONTEXT = "kubernetes.quasys.local:32544"
+        ARGOCD_CONTEXT = "kubernetes.quasys.local:30617"
         ARGOCD_USERNAME = "admin"
         ARGOCD_PASSWORD = "rsC7AaUj3lo8Tvk9"
         DOCKER_APP_REPO = "shield07"
