@@ -10,7 +10,7 @@ pipeline {
         ARGOCD_APP_CONFIG_PATH = "argo-apps/values.yaml"
         ARGOCD_CONTEXT = "kubernetes.quasys.local:32544"
         ARGOCD_USERNAME = "admin"
-        ARGOCD_PASSWORD = "M648EbHtbaPMiNOs"
+        ARGOCD_PASSWORD = "rsC7AaUj3lo8Tvk9"
         DOCKER_APP_REPO = "shield07"
         // Credentials
         DOCKER_CREDS = credentials("docker")
