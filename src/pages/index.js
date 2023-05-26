@@ -40,7 +40,7 @@ export default function Home() {
         </div>
 
         <div className={styles.center}>
-          HOLA
+          GitOPS
           <Image
             className={styles.logo}
             src="/next.svg"
